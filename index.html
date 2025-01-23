@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Basic Statistics Example</title>
+</head>
+<body>
+
+  <h1>Basic Statistics</h1>
+
+  <p>Enter a list of numbers (separated by commas):</p>
+  <input type="text" id="numbersInput">
+  <button onclick="calculate()">Calculate</button>
+
+  <p><strong>Mean:</strong> <span id="mean"></span></p>
+  <p><strong>Median:</strong> <span id="median"></span></p>
+  <p><strong>Mode:</strong> <span id="mode"></span></p>
+  <p><strong>Standard Deviation:</strong> <span id="stdDev"></span></p>
+
+  <script>
+    function calculate() {
+      const numbersInput = document.getElementById('numbersInput').value;
+      const numbersArray = numbersInput.split(',').map(Number);
+
+      // Calculate mean
+      const sum = numbersArray.reduce((a, b) => a + b, 0);
+      const mean = sum / numbersArray.length;
+      document.getElementById('mean').textContent = mean;
+
+      // Calculate median
+      const sortedNumbers = [...numbersArray].sort((a, b) => a - b);
+      const mid = Math.floor(sortedNumbers.length / 2);
+      const median = sortedNumbers.length % 2 === 0
+        ? (sortedNumbers[mid - 1] + sortedNumbers[mid]) / 2
+        : sortedNumbers[mid];
+      document.getElementById('median').textContent = median;
+
+      // Calculate mode
+      const frequency = {};
+      let maxFrequency = 0;
+      let mode;
+      for (const num of numbersArray) {
+        frequency[num] = (frequency[num] || 0) + 1;
+        if (frequency[num] > maxFrequency) {
+          maxFrequency = frequency[num];
+          mode = num;
+        }
+      }
+      document.getElementById('mode').textContent = mode;
+
+      // Calculate standard deviation
+      const squaredDifferences = numbersArray.map(num => Math.pow(num - mean, 2));
+      const variance = squaredDifferences.reduce((a, b) => a + b, 0) / numbersArray.length;
+      const stdDev = Math.sqrt(variance);
+      document.getElementById('stdDev').textContent = stdDev;
+    }
+  </script>
+
+</body>
+</html>
